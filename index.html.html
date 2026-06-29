@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal RH — Solicitações</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --surface2: #F0EFE9;
+    --border: #E2E0D8;
+    --border-strong: #C8C6BC;
+    --text: #1A1916;
+    --text-2: #5C5A53;
+    --text-3: #9C9A92;
+    --accent: #2B5BE8;
+    --accent-bg: #EEF2FD;
+    --accent-border: #C0CEFC;
+    --success: #1A7C4F;
+    --success-bg: #E8F7F0;
+    --warning: #92500A;
+    --warning-bg: #FEF3E2;
+    --danger: #B91C1C;
+    --danger-bg: #FEE2E2;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .header-tag {
+    font-size: 12px;
+    color: var(--text-3);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+  }
+  .hero-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--text-2);
+    max-width: 520px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .nav-tab {
+    padding: 9px 18px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text-2);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .nav-tab:hover { border-color: var(--border-strong); color: var(--text); }
+  .nav-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .nav-tab svg { width: 15px; height: 15px; }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header { margin-bottom: 1.75rem; }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .section-header p { font-size: 13px; color: var(--text-2); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 34px; height: 34px;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-icon svg { width: 16px; height: 16px; color: var(--accent); }
+  .card-title { font-size: 14px; font-weight: 600; }
+  .card-sub { font-size: 12px; color: var(--text-3); }
+
+  /* ── FIELDS ── */
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+  .field label .req { color: var(--accent); margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(43,91,232,0.1);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-3); }
+  .field textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+  .field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%239C9A92' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) {
+    .row2, .row3 { grid-template-columns: 1fr; }
+  }
+
+  /* ── RADIO / CHECKBOX ── */
+  .options-list { display: flex; flex-direction: column; gap: 8px; }
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .option-item:hover { border-color: var(--border-strong); background: var(--surface2); }
+  .option-item input[type="radio"], .option-item input[type="checkbox"] {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .option-item.selected { border-color: var(--accent); background: var(--accent-bg); }
+  .option-label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .option-desc { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+  /* ── INLINE OPTIONS ── */
+  .inline-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .inline-opt {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: all 0.12s;
+    white-space: nowrap;
+  }
+  .inline-opt:hover { border-color: var(--border-strong); color: var(--text); }
+  .inline-opt input { display: none; }
+  .inline-opt.selected { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+
+  /* ── COLLAPSIBLE ── */
+  .collapsible { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
+  .collapsible.open { display: block; }
+
+  /* ── STARS ── */
+  .star-row { display: flex; gap: 4px; margin-top: 6px; }
+  .star-btn {
+    font-size: 26px; background: none; border: none; cursor: pointer; line-height: 1;
+    color: var(--border-strong); transition: color 0.1s, transform 0.1s;
+    padding: 2px;
+  }
+  .star-btn:hover { transform: scale(1.15); }
+  .star-btn.on { color: #F59E0B; }
+  .star-label { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+
+  /* ── SECTOR TABS ── */
+  .sector-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .stab {
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px; font-weight: 500;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text-2);
+    transition: all 0.12s;
+  }
+  .stab:hover { border-color: var(--border-strong); color: var(--text); }
+  .stab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ── RESULT BADGE ── */
+  .result-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 13px; font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .result-badge.pass { background: var(--success-bg); color: var(--success); border-color: #B7E8CE; }
+  .result-badge.fail { background: var(--danger-bg); color: var(--danger); border-color: #FCA5A5; }
+  .result-badge.neutral { background: var(--surface2); color: var(--text-2); border-color: var(--border); }
+
+  /* ── PROGRESS ── */
+  .progress-bar { height: 4px; background: var(--border); border-radius: 100px; margin-top: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.3s; }
+
+  /* ── SUBMIT BUTTON ── */
+  .submit-wrap { margin-top: 1.5rem; }
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.15s;
+    box-shadow: var(--shadow);
+  }
+  .submit-btn:hover { background: #1E4BD4; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn svg { width: 17px; height: 17px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1A1916;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 100px;
+    font-size: 14px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast-dot { width: 8px; height: 8px; background: #4ADE80; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+  /* ── HINT ── */
+  .hint {
+    background: var(--warning-bg);
+    border: 1px solid #FDE68A;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--warning);
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .hint svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── STEP INDICATOR ── */
+  .step-indicator {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 12px; color: var(--text-3);
+  }
+  .step-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--text-3);
+    flex-shrink: 0;
+  }
+  .step-dot.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--text-3);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header { padding: 0 1rem; }
+    .hero { padding: 2rem 1rem 1.75rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    .nav-tab span { display: none; }
+    .nav-tab { padding: 9px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    Portal RH
+  </div>
+  <span class="header-tag">Solicitações internas</span>
+</header>
+
+<div class="hero">
+  <span class="hero-label">Gestores &amp; RH</span>
+  <h1>Central de solicitações</h1>
+  <p>Abertura de vagas, desligamentos, promoções e testes práticos — tudo em um único lugar.</p>
+  <div class="nav-tabs" role="tablist">
+    <button class="nav-tab active" onclick="show('vaga',this)" role="tab" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      <span>Abertura de vaga</span>
+    </button>
+    <button class="nav-tab" onclick="show('desligamento',this)" role="tab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      <span>Desligamento</span>
+    </button>
+    <button class="nav-tab" onclick="show('promocao',this)" role="tab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <span>Promoção interna</span>
+    </button>
+    <button class="nav-tab" onclick="show('teste',this)" role="tab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Teste prático</span>
+    </button>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════ ABERTURA DE VAGA ══════════════ -->
+<div id="vaga" class="section active">
+  <div class="section-header">
+    <h2>Abertura de vaga</h2>
+    <p>Preencha todos os campos para solicitar a abertura de uma nova posição.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div><div class="card-title">Dados da vaga</div><div class="card-sub">Informações básicas da posição</div></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Data de abertura <span class="req">*</span></label><input type="date" id="v-data" required></div>
+      <div class="field"><label>Função / cargo <span class="req">*</span></label><input type="text" id="v-cargo" placeholder="Ex: Analista de TI Pleno" required></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Departamento <span class="req">*</span></label>
+        <select id="v-depto" required>
+          <option value="">Selecione o departamento...</option>
+          <option>Tecnologia</option><option>Financeiro</option><option>Operações</option>
+          <option>Comercial</option><option>RH</option><option>Marketing</option>
+          <option>Jurídico</option><option>Logística</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Modalidade de contratação <span class="req">*</span></label>
+        <select id="v-modalidade" required>
+          <option value="">Selecione...</option>
+          <option>CLT — Presencial</option><option>CLT — Híbrido</option><option>CLT — Remoto</option>
+          <option>PJ</option><option>Estágio</option><option>Temporário</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Faixa salarial</label>
+        <input type="text" id="v-salario" placeholder="Ex: R$ 4.000 – R$ 6.000">
+      </div>
+      <div class="field">
+        <label>Urgência da vaga</label>
+        <select id="v-urgencia">
+          <option value="">Selecione...</option>
+          <option>Baixa — até 60 dias</option>
+          <option>Média — até 30 dias</option>
+          <option>Alta — até 15 dias</option>
+          <option>Crítica — imediata</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div><div class="card-title">Substituição</div><div class="card-sub">Caso exista um colaborador sendo substituído</div></div>
+    </div>
+    <div class="field">
+      <label>Colaborador substituído</label>
+      <input type="text" id="v-substituto" placeholder="Nome do colaborador que está saindo (deixe em branco se for vaga nova)">
+    </div>
+    <div class="field">
+      <label>Esta substituição foi alinhada com a diretoria? <span class="req">*</span></label>
+      <div class="options-list">
+        <label class="option-item" onclick="selectOpt(this,'vaga-align')">
+          <input type="radio" name="vaga-align" value="sim">
+          <div><div class="option-label">Sim, foi alinhado</div><div class="option-desc">A diretoria está ciente e aprovou</div></div>
+        </label>
+        <label class="option-item" onclick="selectOpt(this,'vaga-align')">
+          <input type="radio" name="vaga-align" value="andamento">
+          <div><div class="option-label">Em andamento</div><div class="option-desc">Alinhamento ainda está sendo feito</div></div>
+        </label>
+        <label class="option-item" onclick="selectOpt(this,'vaga-align')">
+          <input type="radio" name="vaga-align" value="nao">
+          <div><div class="option-label">Não foi alinhado</div><div class="option-desc">Abertura emergencial, sem alinhamento prévio</div></div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </div>
+      <div><div class="card-title">Justificativa e perfil</div><div class="card-sub">Contexto e requisitos da vaga</div></div>
+    </div>
+    <div class="field"><label>Motivo da abertura <span class="req">*</span></label><textarea id="v-motivo" placeholder="Descreva o motivo: crescimento do time, substituição por desligamento, novo projeto, expansão de área..." required></textarea></div>
+    <div class="field"><label>Requisitos obrigatórios</label><textarea id="v-req-obrig" style="min-height:70px" placeholder="Formação, certificações, anos de experiência mínima..."></textarea></div>
+    <div class="field"><label>Requisitos desejáveis</label><textarea id="v-req-desej" style="min-height:70px" placeholder="Habilidades extras, ferramentas, idiomas..."></textarea></div>
+    <div class="field"><label>Nome do solicitante <span class="req">*</span></label><input type="text" id="v-solicitante" placeholder="Seu nome completo" required></div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="handleSubmit('vaga')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Enviar solicitação de vaga
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ DESLIGAMENTO ══════════════ -->
+<div id="desligamento" class="section">
+  <div class="section-header">
+    <h2>Desligamento</h2>
+    <p>Registre todas as informações sobre o desligamento do colaborador.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div><div class="card-title">Dados do colaborador</div><div class="card-sub">Informações do profissional desligado</div></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Nome completo <span class="req">*</span></label><input type="text" id="d-nome" placeholder="Nome do colaborador" required></div>
+      <div class="field"><label>Matrícula / código</label><input type="text" id="d-matricula" placeholder="Ex: 00481"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Cargo <span class="req">*</span></label><input type="text" id="d-cargo" placeholder="Cargo atual" required></div>
+      <div class="field"><label>Departamento <span class="req">*</span></label>
+        <select id="d-depto" required><option value="">Selecione...</option><option>Tecnologia</option><option>Financeiro</option><option>Operações</option><option>Comercial</option><option>RH</option><option>Marketing</option><option>Jurídico</option><option>Logística</option></select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Data de admissão <span class="req">*</span></label><input type="date" id="d-admissao" required></div>
+      <div class="field"><label>Data de desligamento <span class="req">*</span></label><input type="date" id="d-saida" required></div>
+    </div>
+    <div class="field">
+      <label>Tipo de desligamento <span class="req">*</span></label>
+      <div class="options-list">
+        <label class="option-item" onclick="selectOpt(this,'d-tipo')"><input type="radio" name="d-tipo" value="sem-justa-causa"><div><div class="option-label">Demissão sem justa causa</div><div class="option-desc">Iniciativa da empresa, sem falta grave do colaborador</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'d-tipo')"><input type="radio" name="d-tipo" value="justa-causa"><div><div class="option-label">Demissão por justa causa</div><div class="option-desc">Falta grave comprovada — requer documentação</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'d-tipo')"><input type="radio" name="d-tipo" value="pedido"><div><div class="option-label">Pedido de demissão</div><div class="option-desc">Iniciativa do próprio colaborador</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'d-tipo')"><input type="radio" name="d-tipo" value="acordo"><div><div class="option-label">Rescisão por acordo mútuo</div><div class="option-desc">Ambas as partes concordam com o desligamento</div></div></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#FEF3E2;border-color:#FDE68A">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#92500A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div><div class="card-title">Período de experiência</div><div class="card-sub">Preencha se o colaborador ainda estava em experiência</div></div>
+    </div>
+    <div class="field">
+      <label>O colaborador estava em período de experiência?</label>
+      <div class="inline-options">
+        <label class="inline-opt" onclick="selectInline(this,'d-exp'); toggleBlock('d-exp-block', this.querySelector('input').value === 'sim')">
+          <input type="radio" name="d-exp" value="sim"> Sim, estava
+        </label>
+        <label class="inline-opt" onclick="selectInline(this,'d-exp'); toggleBlock('d-exp-block', false)">
+          <input type="radio" name="d-exp" value="nao"> Não
+        </label>
+      </div>
+    </div>
+    <div class="collapsible" id="d-exp-block">
+      <div class="row2">
+        <div class="field"><label>Duração da experiência</label>
+          <select id="d-exp-dur"><option value="">Selecione...</option><option>30 dias (1ª fase)</option><option>45 dias (1ª fase)</option><option>60 dias (1ª fase)</option><option>30 + 30 dias (2ª fase)</option><option>45 + 45 dias (2ª fase)</option></select>
+        </div>
+        <div class="field"><label>Resultado da avaliação</label>
+          <select id="d-exp-result"><option value="">Selecione...</option><option>Aprovado — efetivação recomendada</option><option>Aprovado com ressalvas</option><option>Reprovado — não efetivação</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Observações sobre o período de experiência</label><textarea id="d-exp-obs" placeholder="Desempenho, adaptação ao time, entregas, pontualidade, postura..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#FEE2E2;border-color:#FCA5A5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div><div class="card-title">Advertências</div><div class="card-sub">Registros disciplinares durante o vínculo</div></div>
+    </div>
+    <div class="field">
+      <label>Existem advertências registradas?</label>
+      <div class="inline-options">
+        <label class="inline-opt" onclick="selectInline(this,'d-adv'); toggleBlock('d-adv-block', true)"><input type="radio" name="d-adv" value="sim"> Sim</label>
+        <label class="inline-opt" onclick="selectInline(this,'d-adv'); toggleBlock('d-adv-block', false)"><input type="radio" name="d-adv" value="nao"> Não</label>
+      </div>
+    </div>
+    <div class="collapsible" id="d-adv-block">
+      <div class="row3">
+        <div class="field"><label>Quantidade</label><input type="number" id="d-adv-qtd" min="1" max="20" placeholder="0"></div>
+        <div class="field"><label>Tipo</label>
+          <select id="d-adv-tipo"><option value="">Selecione...</option><option>Verbal</option><option>Escrita</option><option>Suspensão</option><option>Mista (verbal + escrita)</option></select>
+        </div>
+        <div class="field"><label>Gerou suspensão?</label>
+          <select id="d-adv-susp"><option value="">Selecione...</option><option>Não</option><option>Sim — 1 dia</option><option>Sim — 2 dias</option><option>Sim — 3 dias</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Descrição das advertências</label><textarea id="d-adv-desc" placeholder="Descreva brevemente as ocorrências, datas e motivos..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div><div class="card-title">Feedback de saída</div><div class="card-sub">Entrevista de desligamento e avaliação final</div></div>
+    </div>
+    <div class="field"><label>Motivo principal do desligamento <span class="req">*</span></label><textarea id="d-motivo" placeholder="Descreva o motivo principal do desligamento..." required></textarea></div>
+    <div class="field"><label>Avaliação geral do colaborador</label><textarea id="d-avaliacao" placeholder="Pontualidade, entrega de resultados, relacionamento interpessoal, comprometimento..."></textarea></div>
+    <div class="field"><label>O colaborador recomendaria a empresa? (entrevista de saída)</label>
+      <div class="inline-options">
+        <label class="inline-opt" onclick="selectInline(this,'d-rec')"><input type="radio" name="d-rec" value="sim"> Sim</label>
+        <label class="inline-opt" onclick="selectInline(this,'d-rec')"><input type="radio" name="d-rec" value="nao"> Não</label>
+        <label class="inline-opt" onclick="selectInline(this,'d-rec')"><input type="radio" name="d-rec" value="talvez"> Talvez</label>
+        <label class="inline-opt" onclick="selectInline(this,'d-rec')"><input type="radio" name="d-rec" value="na"> Entrevista não realizada</label>
+      </div>
+    </div>
+    <div class="field"><label>Comentários adicionais / observações do RH</label><textarea id="d-obs" style="min-height:70px" placeholder="Qualquer informação relevante que deva constar no registro..."></textarea></div>
+    <hr class="divider">
+    <div class="field"><label>Responsável pelo registro <span class="req">*</span></label><input type="text" id="d-resp" placeholder="Seu nome" required></div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="handleSubmit('desligamento')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Registrar desligamento
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ PROMOÇÃO INTERNA ══════════════ -->
+<div id="promocao" class="section">
+  <div class="section-header">
+    <h2>Promoção interna</h2>
+    <p>Solicitação de promoção com avaliação técnica e feedback do colaborador.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+      </div>
+      <div><div class="card-title">Dados da promoção</div><div class="card-sub">Informações do colaborador e da proposta</div></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Nome do colaborador <span class="req">*</span></label><input type="text" id="p-nome" placeholder="Nome completo" required></div>
+      <div class="field"><label>Departamento <span class="req">*</span></label>
+        <select id="p-depto" required><option value="">Selecione...</option><option>Tecnologia</option><option>Financeiro</option><option>Operações</option><option>Comercial</option><option>RH</option><option>Marketing</option><option>Jurídico</option><option>Logística</option></select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Cargo atual <span class="req">*</span></label><input type="text" id="p-cargo-atual" placeholder="Ex: Assistente de TI" required></div>
+      <div class="field"><label>Cargo proposto <span class="req">*</span></label><input type="text" id="p-cargo-novo" placeholder="Ex: Analista de TI Júnior" required></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Tempo no cargo atual</label><input type="text" id="p-tempo" placeholder="Ex: 1 ano e 4 meses"></div>
+      <div class="field"><label>Data prevista para a promoção</label><input type="date" id="p-data"></div>
+    </div>
+    <div class="field"><label>Justificativa para a promoção <span class="req">*</span></label><textarea id="p-just" placeholder="Descreva os motivos, conquistas e evidências que embasam a promoção..." required></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div><div class="card-title">Avaliação técnica por setor</div><div class="card-sub">Submeta a prova e registre o resultado</div></div>
+    </div>
+    <div class="field">
+      <label>Setor da avaliação</label>
+      <div class="sector-tabs" id="p-sector-tabs">
+        <button class="stab active" onclick="selectSector('Tecnologia',this)" type="button">Tecnologia</button>
+        <button class="stab" onclick="selectSector('Financeiro',this)" type="button">Financeiro</button>
+        <button class="stab" onclick="selectSector('Operações',this)" type="button">Operações</button>
+        <button class="stab" onclick="selectSector('Comercial',this)" type="button">Comercial</button>
+        <button class="stab" onclick="selectSector('RH',this)" type="button">RH</button>
+        <button class="stab" onclick="selectSector('Marketing',this)" type="button">Marketing</button>
+        <button class="stab" onclick="selectSector('Jurídico',this)" type="button">Jurídico</button>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Data da avaliação</label><input type="date" id="p-av-data"></div>
+      <div class="field"><label>Avaliador responsável</label><input type="text" id="p-avaliador" placeholder="Nome do avaliador"></div>
+    </div>
+    <div class="field"><label>Conteúdo / questões aplicadas — <span id="p-setor-nome" style="color:var(--accent)">Tecnologia</span></label>
+      <textarea id="p-prova" placeholder="Descreva ou cole as questões da prova aplicada para este setor..."></textarea>
+    </div>
+    <hr class="divider">
+    <div class="row3">
+      <div class="field"><label>Nota obtida (0–10)</label><input type="number" id="p-nota" min="0" max="10" step="0.1" placeholder="0.0" oninput="calcResult()"></div>
+      <div class="field"><label>Nota mínima exigida</label><input type="number" id="p-minima" min="0" max="10" step="0.1" placeholder="7.0" oninput="calcResult()"></div>
+      <div class="field"><label>Situação</label>
+        <div style="padding-top:6px"><span class="result-badge neutral" id="p-situacao-badge">Aguardando nota</span></div>
+      </div>
+    </div>
+    <div class="field"><label>Observações do avaliador sobre a prova</label><textarea id="p-obs-av" style="min-height:70px" placeholder="Pontos de destaque, respostas incompletas, nível de conhecimento demonstrado..."></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div><div class="card-title">Feedback do colaborador</div><div class="card-sub">Percepções e avaliação do próprio colaborador</div></div>
+    </div>
+    <div class="field"><label>Autoavaliação do colaborador</label><textarea id="p-autoav" placeholder="O colaborador pode descrever suas percepções sobre o próprio desempenho, pontos fortes e áreas de melhoria..."></textarea></div>
+    <div class="field">
+      <label>Satisfação do colaborador com o processo de avaliação</label>
+      <div class="star-row" id="p-stars" role="group" aria-label="Avaliação de satisfação">
+        <button class="star-btn on" onclick="setStar(1,'p-stars','p-star-label')" type="button" aria-label="1 estrela">★</button>
+        <button class="star-btn on" onclick="setStar(2,'p-stars','p-star-label')" type="button" aria-label="2 estrelas">★</button>
+        <button class="star-btn on" onclick="setStar(3,'p-stars','p-star-label')" type="button" aria-label="3 estrelas">★</button>
+        <button class="star-btn" onclick="setStar(4,'p-stars','p-star-label')" type="button" aria-label="4 estrelas">★</button>
+        <button class="star-btn" onclick="setStar(5,'p-stars','p-star-label')" type="button" aria-label="5 estrelas">★</button>
+      </div>
+      <div class="star-label" id="p-star-label">3 de 5 — Neutro</div>
+    </div>
+    <div class="field"><label>Comentários adicionais do colaborador</label><textarea id="p-coment" style="min-height:70px" placeholder="Expectativas sobre a nova função, dúvidas, sugestões ao RH..."></textarea></div>
+    <hr class="divider">
+    <div class="field"><label>Responsável pela solicitação <span class="req">*</span></label><input type="text" id="p-resp" placeholder="Seu nome" required></div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="handleSubmit('promocao')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Registrar solicitação de promoção
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ TESTE PRÁTICO ══════════════ -->
+<div id="teste" class="section">
+  <div class="section-header">
+    <h2>Contratação — teste prático</h2>
+    <p>Registre o resultado do teste prático de um candidato externo.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      </div>
+      <div><div class="card-title">Dados do candidato</div><div class="card-sub">Informações básicas para o registro</div></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Nome do candidato <span class="req">*</span></label><input type="text" id="t-nome" placeholder="Nome completo" required></div>
+      <div class="field"><label>Vaga pretendida <span class="req">*</span></label><input type="text" id="t-vaga" placeholder="Cargo / função" required></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Departamento</label>
+        <select id="t-depto"><option value="">Selecione...</option><option>Tecnologia</option><option>Financeiro</option><option>Operações</option><option>Comercial</option><option>RH</option><option>Marketing</option><option>Jurídico</option><option>Logística</option></select>
+      </div>
+      <div class="field"><label>Data do teste <span class="req">*</span></label><input type="date" id="t-data" required></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Avaliador responsável <span class="req">*</span></label><input type="text" id="t-avaliador" placeholder="Nome do avaliador" required></div>
+      <div class="field"><label>Etapa do processo seletivo</label>
+        <select id="t-etapa"><option value="">Selecione...</option><option>1ª fase — Triagem</option><option>2ª fase — Técnico</option><option>3ª fase — Gestor</option><option>Fase final</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div><div class="card-title">Critérios avaliados</div><div class="card-sub">Marque os critérios em que o candidato foi aprovado</div></div>
+    </div>
+    <div id="criterios-list">
+      <label class="option-item" style="margin-bottom:8px" onclick="toggleCheck(this)"><input type="checkbox" id="c1"><div><div class="option-label">Conhecimento técnico da área</div><div class="option-desc">Domínio dos conteúdos específicos da vaga</div></div></label>
+      <label class="option-item" style="margin-bottom:8px" onclick="toggleCheck(this)"><input type="checkbox" id="c2"><div><div class="option-label">Raciocínio lógico e resolução de problemas</div><div class="option-desc">Capacidade de análise e tomada de decisão</div></div></label>
+      <label class="option-item" style="margin-bottom:8px" onclick="toggleCheck(this)"><input type="checkbox" id="c3"><div><div class="option-label">Comunicação e clareza</div><div class="option-desc">Clareza nas respostas e postura comunicativa</div></div></label>
+      <label class="option-item" style="margin-bottom:8px" onclick="toggleCheck(this)"><input type="checkbox" id="c4"><div><div class="option-label">Organização e gestão do tempo</div><div class="option-desc">Cumprimento dos prazos dentro do teste</div></div></label>
+      <label class="option-item" style="margin-bottom:8px" onclick="toggleCheck(this)"><input type="checkbox" id="c5"><div><div class="option-label">Aderência à cultura da empresa</div><div class="option-desc">Alinhamento de valores e perfil comportamental</div></div></label>
+      <label class="option-item" onclick="toggleCheck(this)"><input type="checkbox" id="c6"><div><div class="option-label">Experiência prática demonstrada</div><div class="option-desc">Evidências de vivência real na área</div></div></label>
+    </div>
+    <hr class="divider">
+    <div class="row3">
+      <div class="field"><label>Nota final (0–10)</label><input type="number" id="t-nota" min="0" max="10" step="0.1" placeholder="0.0" oninput="calcPratResult()"></div>
+      <div class="field"><label>Nota mínima</label><input type="number" id="t-minima" min="0" max="10" step="0.1" placeholder="7.0" oninput="calcPratResult()"></div>
+      <div class="field"><label>Resultado</label>
+        <div style="padding-top:6px"><span class="result-badge neutral" id="t-resultado-badge">Aguardando nota</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </div>
+      <div><div class="card-title">Parecer do avaliador</div><div class="card-sub">Análise qualitativa e recomendação final</div></div>
+    </div>
+    <div class="field"><label>Pontos fortes do candidato</label><textarea id="t-forte" placeholder="O que se destacou positivamente durante o teste..."></textarea></div>
+    <div class="field"><label>Pontos de atenção</label><textarea id="t-atencao" placeholder="Lacunas, aspectos que precisam desenvolvimento, comportamentos a observar..."></textarea></div>
+    <div class="field">
+      <label>Satisfação do avaliador com o desempenho</label>
+      <div class="star-row" id="t-stars">
+        <button class="star-btn on" onclick="setStar(1,'t-stars','t-star-label')" type="button">★</button>
+        <button class="star-btn on" onclick="setStar(2,'t-stars','t-star-label')" type="button">★</button>
+        <button class="star-btn on" onclick="setStar(3,'t-stars','t-star-label')" type="button">★</button>
+        <button class="star-btn" onclick="setStar(4,'t-stars','t-star-label')" type="button">★</button>
+        <button class="star-btn" onclick="setStar(5,'t-stars','t-star-label')" type="button">★</button>
+      </div>
+      <div class="star-label" id="t-star-label">3 de 5 — Neutro</div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Recomendação final <span class="req">*</span></label>
+      <div class="options-list">
+        <label class="option-item" onclick="selectOpt(this,'t-rec')"><input type="radio" name="t-rec" value="contratar"><div><div class="option-label" style="color:var(--success)">✓ Aprovar e contratar</div><div class="option-desc">Candidato atende aos requisitos da vaga</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'t-rec')"><input type="radio" name="t-rec" value="segunda-fase"><div><div class="option-label">Avançar para próxima fase</div><div class="option-desc">Potencial identificado, mas requer mais avaliação</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'t-rec')"><input type="radio" name="t-rec" value="banco"><div><div class="option-label">Banco de talentos</div><div class="option-desc">Bom perfil, mas não para esta vaga agora</div></div></label>
+        <label class="option-item" onclick="selectOpt(this,'t-rec')"><input type="radio" name="t-rec" value="reprovar"><div><div class="option-label" style="color:var(--danger)">✗ Reprovar</div><div class="option-desc">Não atende aos requisitos mínimos</div></div></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="handleSubmit('teste')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Registrar resultado do teste
+    </button>
+  </div>
+</div>
+
+</main>
+
+<footer>Portal de Solicitações — RH Interno &nbsp;·&nbsp; Uso exclusivo para gestores e equipe de RH</footer>
+
+<div class="toast" id="toast"><span class="toast-dot"></span><span id="toast-msg">Solicitação enviada com sucesso!</span></div>
+
+<script>
+const starLabels = ['','Muito insatisfeito','Insatisfeito','Neutro','Satisfeito','Muito satisfeito'];
+const starVals = { 'p-stars': 3, 't-stars': 3 };
+
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectOpt(el, name) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => {
+    r.closest('.option-item').classList.remove('selected');
+  });
+  el.classList.add('selected');
+}
+
+function selectInline(el, name) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => {
+    r.closest('.inline-opt').classList.remove('selected');
+  });
+  el.classList.add('selected');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('selected', el.querySelector('input').checked);
+}
+
+function toggleBlock(id, show) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open', show);
+}
+
+function selectSector(name, btn) {
+  document.querySelectorAll('#p-sector-tabs .stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('p-setor-nome').textContent = name;
+  document.getElementById('p-prova').placeholder = `Descreva ou cole as questões da prova de ${name}...`;
+}
+
+function setStar(n, containerId, labelId) {
+  starVals[containerId] = n;
+  const btns = document.querySelectorAll(`#${containerId} .star-btn`);
+  btns.forEach((b, i) => b.classList.toggle('on', i < n));
+  document.getElementById(labelId).textContent = `${n} de 5 — ${starLabels[n]}`;
+}
+
+function calcResult() {
+  const nota = parseFloat(document.getElementById('p-nota').value);
+  const min = parseFloat(document.getElementById('p-minima').value) || 7;
+  const badge = document.getElementById('p-situacao-badge');
+  if (isNaN(nota)) { badge.textContent = 'Aguardando nota'; badge.className = 'result-badge neutral'; return; }
+  if (nota >= min) { badge.textContent = '✓ Aprovado'; badge.className = 'result-badge pass'; }
+  else { badge.textContent = '✗ Reprovado'; badge.className = 'result-badge fail'; }
+}
+
+function calcPratResult() {
+  const nota = parseFloat(document.getElementById('t-nota').value);
+  const min = parseFloat(document.getElementById('t-minima').value) || 7;
+  const badge = document.getElementById('t-resultado-badge');
+  if (isNaN(nota)) { badge.textContent = 'Aguardando nota'; badge.className = 'result-badge neutral'; return; }
+  if (nota >= min) { badge.textContent = '✓ Aprovado'; badge.className = 'result-badge pass'; }
+  else { badge.textContent = '✗ Reprovado'; badge.className = 'result-badge fail'; }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+const toastMessages = {
+  vaga: 'Solicitação de vaga enviada com sucesso!',
+  desligamento: 'Desligamento registrado com sucesso!',
+  promocao: 'Promoção registrada com sucesso!',
+  teste: 'Resultado do teste registrado!'
+};
+
+function handleSubmit(type) {
+  showToast(toastMessages[type]);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
